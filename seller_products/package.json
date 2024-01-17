@@ -1,0 +1,35 @@
+{
+  "name": "seller_products",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "start-server": "nodemon server/server.js --watch server/*",
+    "start": "concurrently \"npm run start-server\" \"vite\" --kill-others --kill-others-on-fail",
+    "test": "react-scripts test --env=jsdom"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.2.6",
+    "@mui/icons-material": "^5.15.4",
+    "antd": "^5.13.1",
+    "axios": "^1.6.5",
+    "body-parser": "1.19.0",
+    "bulma": "^0.9.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.21.2",
+    "styled-components": "^6.1.8"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "5.1.0",
+    "nodemon": "2.0.3",
+    "react-scripts": "3.4.1",
+    "sqlite3": "5.1.7",
+    "vite": "^5.0.11"
+  }
+}
