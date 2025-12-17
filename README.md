@@ -18,7 +18,7 @@ Sistem manajemen produk sederhana (Dashboard Penjual) yang terdiri dari Frontend
 
 ```bash
 cd be
-npm install
+bun install
 ```
 
 ### 2. Setup Database
@@ -36,7 +36,7 @@ _Atau buat manual via phpMyAdmin._
 
 ```bash
 cd ../seller_products
-npm install
+bun install
 ```
 
 ## ⚡ Cara Menjalankan
@@ -49,10 +49,10 @@ Anda perlu menjalankan Backend dan Frontend di **dua terminal berbeda**.
 cd be
 
 # (Opsional) Isi data dummy pertama kali
-npm run seed
+bun run seed
 
 # Jalankan Server
-npm start
+bun start
 ```
 
 _Server akan berjalan di `http://localhost:5000`_
@@ -61,7 +61,7 @@ _Server akan berjalan di `http://localhost:5000`_
 
 ```bash
 cd seller_products
-npm run dev
+bun run dev
 ```
 
 _Aplikasi bisa diakses di `http://localhost:5173`_
