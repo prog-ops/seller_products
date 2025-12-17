@@ -3,29 +3,48 @@ import {BrowserRouter, Link, Route, Router, Routes} from "react-router-dom";
 import './App.css'
 import ProductList from "./components/ProductList.jsx";
 import ProductAdd from "./components/ProductAdd.jsx";
-import {Button, Drawer, Menu} from "antd";
+import {Button, Drawer, Form, Input, Menu} from "antd";
+
+const correctUsername = 'user';
+const correctPassword = 'pass';
 
 function App() {
     const [visible, setVisible] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
     const showDrawer = () => {
         setVisible(true);
     };
     const onClose = () => {
         setVisible(false);
     };
+
     const handleLogout = () => {
-        console.log('Logout clicked');
+        setLoggedIn(false);
+        setUsername('');
+        setPassword('');
+    };
+
+    const handleLogin = () => {
+        if (username === correctUsername && password === correctPassword) {
+            setLoggedIn(true);
+            onClose();
+        } else {
+            alert('Invalid username or password');
+        }
     };
 
     return (
         <BrowserRouter>
-            <div>
+            {loggedIn ? <div>
                 {/* Top Navigation Bar */}
                 <Menu mode="horizontal" theme="dark">
                     <Menu.Item key="openDrawer" onClick={showDrawer}>
                         Open Drawer
                     </Menu.Item>
-                    <Menu.Item key="logout" style={{ marginLeft: 'auto' }}>
+                    <Menu.Item key="logout" style={{marginLeft: 'auto'}}>
                         <Button type="link" onClick={handleLogout}>
                             Logout
                         </Button>
@@ -58,7 +77,32 @@ function App() {
                     <Route path='/' element={<ProductList/>}/>
                     <Route path='/add' element={<ProductAdd/>}/>
                 </Routes>
-            </div>
+            </div> : null}
+            {!loggedIn ? (
+                // Login Form
+                <div style={{ maxWidth: 300, margin: '20px auto' }}>
+                    <Form>
+                        <Form.Item label="Username">
+                            <Input
+                                type="text"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                            />
+                        </Form.Item>
+                        <Form.Item label="Password">
+                            <Input.Password
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" onClick={handleLogin}>
+                                Login
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </div>
+            ) : null}
         </BrowserRouter>
     )
 }
