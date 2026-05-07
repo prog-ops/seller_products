@@ -14,7 +14,7 @@ export const getProducts =
 export const getProductById =
     async (req, res) => {
         try {
-            const response = await Product.findOne({where: {id: req.param.id}})
+            const response = await Product.findOne({where: {id: req.params.id}})
             res.json(response)
         } catch (e) {
             console.error(e.message)
@@ -52,10 +52,23 @@ export const saveProduct = (req, res) => {
 
 export const updateProduct =
     async (req, res) => {
-
+        try {
+            await Product.update(
+                { name: req.body.title },
+                { where: { id: req.params.id } }
+            );
+            res.status(200).json({ msg: "Product Updated" });
+        } catch (error) {
+            res.status(500).json({ msg: error.message });
+        }
     }
 
 export const deleteProduct =
     async (req, res) => {
-
+        try {
+            await Product.destroy({ where: { id: req.params.id } });
+            res.status(200).json({ msg: "Product Deleted" });
+        } catch (error) {
+            res.status(500).json({ msg: error.message });
+        }
     }

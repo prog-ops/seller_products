@@ -7,7 +7,7 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
-app.use(FileUpload())
+app.use(FileUpload({ createParentPath: true }))
 app.use(express.static("public"))
 app.use(ProductRoute)
 
