@@ -1,98 +1,119 @@
-import {useState} from "react";
-import {useNavigate} from "react-router-dom";
-import axios from "axios";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Form, Input, Button, Card, Upload, Typography, message, Image, Space } from 'antd';
+import { UploadOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import api from '../api/axiosInstance';
 
-export default function ProductAdd(){
-    const navigate = useNavigate()
-    const [title, setTitle] = useState('')
-    const [file, setFile] = useState('')
-    const [preview, setPreview] = useState('')
-    const [errorMsg, setErrorMsg] = useState('')
+const { Title } = Typography;
 
-    const loadImage = e => {
-        const image = e.target.files[0]
-        setFile(image)
-        setPreview(URL.createObjectURL(image))
-    }
+/**
+ * ProductAdd — form untuk menambahkan produk baru.
+ * Menggunakan Ant Design Form dan axios instance terpusat.
+ */
+export default function ProductAdd() {
+    const navigate = useNavigate();
+    const [file, setFile] = useState(null);
+    const [preview, setPreview] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const saveProduct = async (e) => {
-        e.preventDefault()
-        const data = new FormData()
-        data.append('file', file)
-        data.append('title', title)
-        try {
-            await axios.post(
-                'http://localhost:5000/products',
-                data,
-                {
-                    headers: {'Content-type': 'multipart/form-data'}
-                }
-            );
-            navigate('/')
-        } catch (e) {
-            if (e.response && e.response.data && e.response.data.msg) {
-                setErrorMsg(e.response.data.msg);
-            } else {
-                setErrorMsg(e.message);
-            }
+    /**
+     * Handle file selection — simpan file dan buat preview URL.
+     */
+    const handleFileChange = (info) => {
+        const selectedFile = info.file.originFileObj || info.file;
+        setFile(selectedFile);
+        setPreview(URL.createObjectURL(selectedFile));
+    };
+
+    /**
+     * Submit form — kirim data ke backend via multipart/form-data.
+     */
+    const handleSubmit = async (values) => {
+        if (!file) {
+            message.warning('Pilih gambar produk terlebih dahulu.');
+            return;
         }
-    }
 
-    return(
-        <div className='columns is-centered mt-5'>
-            <div className='column is-half'>
-                <p className='h1'>Tambah Produk</p>
-                {errorMsg && <div className="notification is-danger">{errorMsg}</div>}
-                <form onSubmit={saveProduct}>
+        setLoading(true);
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('title', values.title);
 
-                    <div className='field'>
-                        <label className='label'>Nama</label>
-                        <div className='control'>
-                            <input
-                                type='text'
-                                className='input'
-                                value={title}
-                                onChange={e => setTitle(e.target.value)}
-                                placeholder='Nama produk'
+        try {
+            await api.post('/products', formData, {
+                headers: { 'Content-type': 'multipart/form-data' },
+            });
+            message.success('Produk berhasil ditambahkan!');
+            navigate('/');
+        } catch (err) {
+            message.error(err.response?.data?.message || 'Gagal menambahkan produk.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div style={{ maxWidth: 600, margin: '0 auto' }}>
+            <Space style={{ marginBottom: 16 }}>
+                <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/')}>
+                    Kembali
+                </Button>
+            </Space>
+
+            <Card>
+                <Title level={3} style={{ marginBottom: 24 }}>Tambah Produk</Title>
+
+                <Form layout="vertical" onFinish={handleSubmit} requiredMark={false}>
+                    <Form.Item
+                        label="Nama Produk"
+                        name="title"
+                        rules={[
+                            { required: true, message: 'Nama produk wajib diisi' },
+                            { max: 255, message: 'Nama produk maksimal 255 karakter' },
+                        ]}
+                    >
+                        <Input placeholder="Masukkan nama produk" size="large" />
+                    </Form.Item>
+
+                    <Form.Item label="Gambar Produk">
+                        <Upload
+                            beforeUpload={() => false}
+                            onChange={handleFileChange}
+                            maxCount={1}
+                            accept=".jpg,.jpeg,.png"
+                            showUploadList={false}
+                        >
+                            <Button icon={<UploadOutlined />}>Pilih Gambar</Button>
+                        </Upload>
+                        <div style={{ marginTop: 4, fontSize: 12, color: '#888' }}>
+                            Format: JPG, JPEG, PNG. Maks: 2 MB.
+                        </div>
+                    </Form.Item>
+
+                    {preview && (
+                        <Form.Item>
+                            <Image
+                                src={preview}
+                                alt="Preview"
+                                width={200}
+                                style={{ borderRadius: 8 }}
                             />
-                        </div>
-                    </div>
-
-                    <div className='field'>
-                        <label className='label'>Image</label>
-                        <div className='control'>
-                            <div className='file'>
-                                <label className='file-label'>
-                                    <input
-                                        type='file'
-                                        className='file-input'
-                                        onChange={loadImage}
-                                    />
-                                    <span className='file-cta'>
-                                        <span className='file-label'>Choose a file..</span>
-                                    </span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    {preview ? (
-                        <figure className='image is-128x128'>
-                            <img src={preview} alt='Preview Image'/>
-                        </figure>
-                    ) : (
-                        ""
+                        </Form.Item>
                     )}
 
-                    <div className='field'>
-                        <div className='control'>
-                            <button type='submit' className='button is-success'>
-                                Save
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+                    <Form.Item>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            size="large"
+                            loading={loading}
+                            block
+                        >
+                            Simpan Produk
+                        </Button>
+                    </Form.Item>
+                </Form>
+            </Card>
         </div>
-    )
+    );
 }
