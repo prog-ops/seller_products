@@ -241,9 +241,3 @@ This project directly addresses each challenge above:
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `VITE_API_URL` | `http://localhost:5000` | Backend API base URL |
-
----
-
-## License
-
-ISC
