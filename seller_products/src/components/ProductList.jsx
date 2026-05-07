@@ -31,7 +31,11 @@ export default function ProductList(){
                             <div className='card-image'>
                                 <figure className='image is-4by3'>
                                     <img src={product.url}
-                                         alt='Image placeholder'/>
+                                         alt='Image placeholder'
+                                         onError={(e) => {
+                                             e.target.onerror = null;
+                                             e.target.src = 'https://dummyimage.com/400x300/ccc/000.jpg&text=No+Image';
+                                         }}/>
                                 </figure>
                             </div>
                             <div className='card-content'>

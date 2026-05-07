@@ -4,6 +4,7 @@ import './App.css'
 import ProductList from "./components/ProductList.jsx";
 import ProductAdd from "./components/ProductAdd.jsx";
 import {Button, Drawer, Form, Input, Menu} from "antd";
+import {MenuOutlined} from "@ant-design/icons";
 
 const correctUsername = 'user';
 const correctPassword = 'pass';
@@ -42,7 +43,7 @@ function App() {
                 {/* Top Navigation Bar */}
                 <Menu mode="horizontal" theme="dark">
                     <Menu.Item key="openDrawer" onClick={showDrawer}>
-                        Open Drawer
+                        <MenuOutlined />
                     </Menu.Item>
                     <Menu.Item key="logout" style={{marginLeft: 'auto'}}>
                         <Button type="link" onClick={handleLogout}>
@@ -57,7 +58,7 @@ function App() {
                     placement="left"
                     closable={false}
                     onClose={onClose}
-                    visible={visible}>
+                    open={visible}>
                     <Menu mode="vertical" theme="dark" onClick={onClose}>
                         <Menu.Item key="productList">
                             <Link to="/">Product List</Link>
