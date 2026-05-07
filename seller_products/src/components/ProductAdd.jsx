@@ -7,6 +7,7 @@ export default function ProductAdd(){
     const [title, setTitle] = useState('')
     const [file, setFile] = useState('')
     const [preview, setPreview] = useState('')
+    const [errorMsg, setErrorMsg] = useState('')
 
     const loadImage = e => {
         const image = e.target.files[0]
@@ -29,7 +30,11 @@ export default function ProductAdd(){
             );
             navigate('/')
         } catch (e) {
-            console.error(e.message)
+            if (e.response && e.response.data && e.response.data.msg) {
+                setErrorMsg(e.response.data.msg);
+            } else {
+                setErrorMsg(e.message);
+            }
         }
     }
 
@@ -37,6 +42,7 @@ export default function ProductAdd(){
         <div className='columns is-centered mt-5'>
             <div className='column is-half'>
                 <p className='h1'>Tambah Produk</p>
+                {errorMsg && <div className="notification is-danger">{errorMsg}</div>}
                 <form onSubmit={saveProduct}>
 
                     <div className='field'>

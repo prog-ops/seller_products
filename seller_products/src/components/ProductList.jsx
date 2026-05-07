@@ -26,8 +26,8 @@ export default function ProductList(){
             {msg && <div className="notification is-danger">{msg}</div>}
             <div className='columns is-multiline'>
                 {products.map((product, index) => (
-                    <div className='column is-one-quarter'>
-                        <div className='card' key={index+''+product.url}>
+                    <div className='column is-one-quarter' key={index+''+product.url}>
+                        <div className='card'>
                             <div className='card-image'>
                                 <figure className='image is-4by3'>
                                     <img src={product.url}
