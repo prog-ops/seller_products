@@ -9,6 +9,41 @@ import { success, error } from '../utils/apiResponse.js';
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
+/**
+ * @swagger
+ * /products:
+ *   get:
+ *     summary: Ambil daftar produk dengan pagination
+ *     tags: [Products]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema: { type: integer, default: 1 }
+ *         description: Nomor halaman
+ *       - in: query
+ *         name: limit
+ *         schema: { type: integer, default: 10 }
+ *         description: Jumlah item per halaman
+ *     responses:
+ *       200:
+ *         description: Berhasil mengambil data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success: { type: boolean }
+ *                 message: { type: string }
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     total: { type: integer }
+ *                     page: { type: integer }
+ *                     totalPages: { type: integer }
+ *                     data:
+ *                       type: array
+ *                       items: { $ref: '#/components/schemas/Product' }
+ */
 export const getProducts = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
@@ -26,6 +61,32 @@ export const getProducts = async (req, res) => {
  *
  * @param {import('express').Request} req
  * @param {import('express').Response} res
+ */
+/**
+ * @swagger
+ * /products/{id}:
+ *   get:
+ *     summary: Ambil produk berdasarkan ID
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer }
+ *         description: ID produk
+ *     responses:
+ *       200:
+ *         description: Produk ditemukan
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success: { type: boolean }
+ *                 message: { type: string }
+ *                 data: { $ref: '#/components/schemas/Product' }
+ *       404:
+ *         description: Produk tidak ditemukan
  */
 export const getProductById = async (req, res) => {
     try {
@@ -45,6 +106,47 @@ export const getProductById = async (req, res) => {
  *
  * @param {import('express').Request} req
  * @param {import('express').Response} res
+ */
+/**
+ * @swagger
+ * /products:
+ *   post:
+ *     summary: Tambah produk baru (dengan gambar)
+ *     tags: [Products]
+ *     security: [{ bearerAuth: [] }]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             required: [title, file]
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 description: Nama produk
+ *                 example: "Mouse Gaming"
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *                 description: File gambar (max 2MB, JPG/PNG)
+ *     responses:
+ *       201:
+ *         description: Produk berhasil ditambahkan
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success: { type: boolean, example: true }
+ *                 message: { type: string }
+ *                 data: { $ref: '#/components/schemas/Product' }
+ *       400:
+ *         description: Tidak ada file atau validasi gagal
+ *       401:
+ *         description: Tidak terautentikasi
+ *       422:
+ *         description: Tipe/ukuran file tidak valid
  */
 export const saveProduct = async (req, res) => {
     if (!req.files || req.files === null) {
@@ -85,6 +187,34 @@ export const saveProduct = async (req, res) => {
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
+/**
+ * @swagger
+ * /products/{id}:
+ *   patch:
+ *     summary: Update nama produk
+ *     tags: [Products]
+ *     security: [{ bearerAuth: [] }]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title: { type: string, example: "Mouse Gaming Pro" }
+ *     responses:
+ *       200:
+ *         description: Produk berhasil diperbarui
+ *       401:
+ *         description: Tidak terautentikasi
+ *       404:
+ *         description: Produk tidak ditemukan
+ */
 export const updateProduct = async (req, res) => {
     try {
         const product = await ProductService.getProductById(req.params.id);
@@ -104,6 +234,26 @@ export const updateProduct = async (req, res) => {
  *
  * @param {import('express').Request} req
  * @param {import('express').Response} res
+ */
+/**
+ * @swagger
+ * /products/{id}:
+ *   delete:
+ *     summary: Hapus produk berdasarkan ID
+ *     tags: [Products]
+ *     security: [{ bearerAuth: [] }]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer }
+ *     responses:
+ *       200:
+ *         description: Produk berhasil dihapus
+ *       401:
+ *         description: Tidak terautentikasi
+ *       404:
+ *         description: Produk tidak ditemukan
  */
 export const deleteProduct = async (req, res) => {
     try {

@@ -6,6 +6,48 @@ import { success, error } from '../utils/apiResponse.js';
  * Register user baru.
  * POST /auth/register
  */
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: Registrasi user baru
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [username, password]
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 minLength: 3
+ *                 example: "johndoe"
+ *               password:
+ *                 type: string
+ *                 minLength: 4
+ *                 example: "rahasia123"
+ *     responses:
+ *       201:
+ *         description: Registrasi berhasil
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success: { type: boolean, example: true }
+ *                 message: { type: string, example: "Registrasi berhasil." }
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Validasi gagal
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/ErrorResponse' }
+ *       409:
+ *         description: Username sudah digunakan
+ */
 export const register = async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -38,6 +80,40 @@ export const register = async (req, res) => {
 /**
  * Login user dan generate JWT token.
  * POST /auth/login
+ */
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Login dan dapatkan JWT token
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [username, password]
+ *             properties:
+ *               username: { type: string, example: "johndoe" }
+ *               password: { type: string, example: "rahasia123" }
+ *     responses:
+ *       200:
+ *         description: Login berhasil
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success: { type: boolean, example: true }
+ *                 message: { type: string, example: "Login berhasil." }
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     token: { type: string, example: "eyJhbGciOiJIUzI1NiIs..." }
+ *                     user: { $ref: '#/components/schemas/User' }
+ *       401:
+ *         description: Kredensial tidak valid
  */
 export const login = async (req, res) => {
     try {
@@ -75,6 +151,29 @@ export const login = async (req, res) => {
 /**
  * Mendapatkan data user yang sedang login (dari token).
  * GET /auth/me
+ */
+/**
+ * @swagger
+ * /auth/me:
+ *   get:
+ *     summary: Dapatkan data user yang sedang login
+ *     tags: [Auth]
+ *     security: [{ bearerAuth: [] }]
+ *     responses:
+ *       200:
+ *         description: Data user berhasil diambil
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success: { type: boolean, example: true }
+ *                 message: { type: string }
+ *                 data: { $ref: '#/components/schemas/User' }
+ *       401:
+ *         description: Token tidak valid / tidak tersedia
+ *       404:
+ *         description: User tidak ditemukan
  */
 export const getMe = async (req, res) => {
     try {

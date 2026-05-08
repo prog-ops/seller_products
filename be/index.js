@@ -11,6 +11,8 @@ import db from './config/Database.js';
 // Import models agar Sequelize mendaftarkan semua tabel saat db.sync()
 import './models/ProductModel.js';
 import './models/UserModel.js';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './swagger.config.js';
 
 dotenv.config();
 
@@ -46,6 +48,22 @@ app.use(express.static('public'));
 // Routes
 app.use(AuthRoute);
 app.use(ProductRoute);
+
+if (process.env.NODE_ENV !== 'production') {
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+        customCss: '.swagger-ui .topbar { display: none }',
+        explorer: true,
+        swaggerOptions: {
+            persistAuthorization: true // Simpan token JWT di UI
+        }
+    }));
+
+    // Endpoint untuk download spec JSON (opsional, untuk Postman/Insomnia)
+    app.get('/swagger.json', (req, res) => {
+        res.setHeader('Content-Type', 'application/json');
+        res.send(swaggerSpec);
+    });
+}
 
 // Global error handler (harus di paling bawah)
 app.use(errorHandler);
