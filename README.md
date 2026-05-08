@@ -6,7 +6,8 @@ A fullstack product management system (Seller Dashboard) built with **React 18**
 
 Swagger API Docs record:
 https://drive.google.com/file/d/1QR9sNzz_CnJCWnAAoU1TyCGo8srADOOz/view?usp=drive_link
-
+Vitest + Supertest integration tests report file:
+https://drive.google.com/file/d/1X30grHADev7XEzhrm2gHOpdwTH2qNrKZ/view?usp=sharing
 ---
 
 ## Tech Stack
