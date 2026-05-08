@@ -4,6 +4,9 @@ A fullstack product management system (Seller Dashboard) built with **React 18**
 
 > This project demonstrates production-grade patterns: separation of concerns, centralized error handling, security hardening, and standardized API contracts.
 
+Swagger API Docs record:
+https://drive.google.com/file/d/1QR9sNzz_CnJCWnAAoU1TyCGo8srADOOz/view?usp=drive_link
+
 ---
 
 ## Tech Stack
