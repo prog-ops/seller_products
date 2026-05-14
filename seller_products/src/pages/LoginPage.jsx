@@ -43,7 +43,7 @@ export default function LoginPage() {
                     borderRadius: 12,
                     boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
                 }}
-                bordered={false}
+                variant="borderless"
             >
                 <Space direction="vertical" size="middle" style={{ width: '100%', textAlign: 'center' }}>
                     <ShopOutlined style={{ fontSize: 48, color: '#764ba2' }} />
