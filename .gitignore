@@ -1,8 +1,162 @@
+# ============================================
+# DEPENDENCIES
+# ============================================
 node_modules/
+jspm_packages/
+bower_components/
+.pnp
+.pnp.js
+.pnp.cjs
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+package-lock.json.bak
+yarn.lock.bak
+
+# ============================================
+# ENVIRONMENT VARIABLES & SECRETS
+# ============================================
+# CRITICAL: never commit env files or secrets
 .env
-*.log
-.idea/
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.test
+*.env
+!.env.example
+
+# Secret files
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.der
+secrets/
+.secrets/
+
+# ============================================
+# CACHE
+# ============================================
+.cache/
+.vite/
+.parcel-cache/
+.turbo/
+.npm/
+.eslintcache
+.stylelintcache
+.webpack/
+.rollup.cache/
+.tsbuildinfo
+*.tsbuildinfo
+
+# ============================================
+# BUILD OUTPUT
+# ============================================
 dist/
-be/public/images/*
-!be/public/images/.gitkeep
-bun.lock
+dist-ssr/
+build/
+out/
+.next/
+.nuxt/
+.output/
+public/build/
+*.bundle.js
+*.bundle.js.map
+
+# ============================================
+# DATABASE & MIGRATIONS
+# ============================================
+# Local database files & dumps (never commit!)
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+*.sql
+!migrations/**/*.sql
+!seeders/**/*.sql
+
+# Sequelize CLI generated artifacts
+.sequelizerc.local
+db/*.log
+
+# ============================================
+# FILE UPLOADS (runtime user content)
+# ============================================
+# Uploaded product images — keep folder, ignore contents
+uploads/*
+!uploads/.gitkeep
+public/uploads/*
+!public/uploads/.gitkeep
+
+# ============================================
+# LOGS
+# ============================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ============================================
+# TESTING & COVERAGE
+# ============================================
+coverage/
+.nyc_output/
+*.lcov
+.coveralls.yml
+test-results/
+playwright-report/
+.vitest/
+
+# ============================================
+# RUNTIME & SYSTEM FILES
+# ============================================
+pids/
+*.pid
+*.seed
+*.pid.lock
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# ============================================
+# EDITOR & IDE
+# ============================================
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+
+# ============================================
+# TEMPORARY FILES
+# ============================================
+tmp/
+temp/
+*.tmp
+*.temp
+.cache-loader/
+
+# ============================================
+# MISC
+# ============================================
+.node_repl_history
+*.tgz
+.temp/
